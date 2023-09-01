@@ -1,0 +1,136 @@
+//SEPTEMBER 1 2023
+
+//This program is created using an arduinu uno r3, button, buzzer and rgb led.
+//When the button is pressed, the light flasehs like a disco ball and a song plays.
+const int buzzerPin = 6;  // Define the buzzer pin
+
+const int RED_PIN = 9;
+const int GREEN_PIN = 10;
+const int BLUE_PIN = 11;
+
+const int button1Pin = 2;  // pushbutton 1 pin
+
+int DISPLAY_TIME = 100; 
+
+int melody[] = {
+  330,330, 247, 262, 294,294, 262, 247, 220, 220,220,
+  262, 330,330, 294, 262, 247, 247,247, 262, 294,294,
+  330,330, 262,262, 220,220,220, 220
+};
+
+int noteDurations[] = {
+  5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+};
+
+void setup() {
+  pinMode(button1Pin, INPUT);
+
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+}
+
+void loop() 
+{
+int button1State;
+  button1State = digitalRead(button1Pin);
+
+if(button1State == LOW)
+{  
+// CODE TO MAKE THE SONG PLAY
+    for (int thisNote = 0; thisNote < 30; thisNote++) {
+    int noteDuration = 1000 / (noteDurations[thisNote]);
+    tone(buzzerPin, melody[thisNote], noteDuration);
+    delay(noteDuration); // Pause for the duration of the note (quarter note)
+    noTone(buzzerPin);
+    delay(100); // Pause between notes
+  }
+ 
+//CODE TO MAKE THE LIGHTS FLASH
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(BLUE_PIN, LOW);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(BLUE_PIN, LOW);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(BLUE_PIN, LOW);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(BLUE_PIN, HIGH);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(BLUE_PIN, LOW);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(BLUE_PIN, HIGH);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(BLUE_PIN, HIGH);
+
+  delay(500);
+
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(BLUE_PIN, HIGH);
+
+  delay(500);
+}
+else 
+{
+
+//CODE TO TURN THE SONG OFF
+  noTone(buzzerPin);
+
+//CODE TO TURN THE LIGHTS OFF
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(BLUE_PIN, LOW);
+}
+int redIntensity;
+  int greenIntensity;
+  int blueIntensity;
+int color;
+  if (color <= 255)          // zone 1
+  {
+    redIntensity = 255 - color;    // red goes from on to off
+    greenIntensity = color;        // green goes from off to on
+    blueIntensity = 0;             // blue is always off
+  }
+  else if (color <= 511)     // zone 2
+  {
+    redIntensity = 0;                     // red is always off
+    greenIntensity = 255 - (color - 256); // green on to off
+    blueIntensity = (color - 256);        // blue off to on
+  }
+  else // color >= 512       // zone 3
+  {
+    redIntensity = (color - 512);         // red off to on
+    greenIntensity = 0;                   // green is always off
+    blueIntensity = 255 - (color - 512);  // blue on to off
+  }
+
+  analogWrite(RED_PIN, redIntensity);
+  analogWrite(BLUE_PIN, blueIntensity);
+  analogWrite(GREEN_PIN, greenIntensity
+}
